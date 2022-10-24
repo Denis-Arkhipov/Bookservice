@@ -26,14 +26,29 @@ public class BookService {
 
     public BookDto read(Long id) {
         Optional<Book> book = repository.findById(id);
-        return mapper.map(book, BookDto.class);
+        return book.map(value -> mapper.map(value, BookDto.class)).orElse(null);
     }
 
     public void create(BookDto bookDto) {
         repository.save(mapper.map(bookDto, Book.class));
     }
 
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public boolean update(BookDto bookDto, Long id) {
+        boolean updated = repository.existsById(id);
+
+        if (updated) {
+            bookDto.setId(id);
+            repository.save(mapper.map(bookDto, Book.class));
+        }
+        return updated;
+    }
+
+    public boolean delete(Long id) {
+        boolean deleted = repository.existsById(id);
+
+        if (deleted) {
+            repository.deleteById(id);
+        }
+        return deleted;
     }
 }
