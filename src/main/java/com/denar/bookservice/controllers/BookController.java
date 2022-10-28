@@ -1,20 +1,17 @@
 package com.denar.bookservice.controllers;
 
 import com.denar.bookservice.dto.BookDto;
-import com.denar.bookservice.repositories.entityes.Book;
 import com.denar.bookservice.services.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @RestController
@@ -33,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDto> getBook(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<BookDto> getBookId(@PathVariable(name = "id") Long id) {
         BookDto book = bookService.read(id);
 
         return book != null
@@ -41,28 +38,33 @@ public class BookController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
-    public ResponseEntity<?> addBook(@RequestBody BookDto bookDto) {
-        bookService.create(bookDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @GetMapping("/name")
+    public ResponseEntity<List<BookDto>> getBooksByName(@RequestParam(value = "name")
+                                                     @NotEmpty String name) {
+        List<BookDto> books = bookService.readByName(name);
+
+        return books != null
+                ? new ResponseEntity<>(books, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBook(@RequestBody BookDto bookDto,
-                                        @PathVariable(name = "id") Long id) {
-        boolean updated = bookService.update(bookDto, id);
+    @GetMapping("/authors/name")
+    public ResponseEntity<List<BookDto>> getBooksByAuthor(
+            @RequestParam(value = "author") @NotEmpty String name) {
+        List<BookDto> books = bookService.readByAuthor(name);
 
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        return books != null
+                ? new ResponseEntity<>(books, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable(name = "id") Long id) {
-        boolean deleted = bookService.delete(id);
+    @GetMapping("/authors/{authorId}")
+    public ResponseEntity<List<BookDto>> getBooksByAuthorId(
+            @PathVariable(name = "authorId") Long authorId) {
+        List<BookDto> books = bookService.readByAuthorId(authorId);
 
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        return books != null
+                ? new ResponseEntity<>(books, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

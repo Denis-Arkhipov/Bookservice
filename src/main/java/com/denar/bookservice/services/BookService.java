@@ -12,15 +12,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class BookService {
     private BookRepository repository;
     private ModelMapper mapper;
 
     public List<BookDto> readAll() {
         return StreamSupport.stream(repository.findAll().spliterator(), false)
-                .map(b -> mapper.map(b, BookDto.class))
+                .map(book -> mapper.map(book, BookDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -29,26 +29,21 @@ public class BookService {
         return book.map(value -> mapper.map(value, BookDto.class)).orElse(null);
     }
 
-    public void create(BookDto bookDto) {
-        repository.save(mapper.map(bookDto, Book.class));
+    public List<BookDto> readByName(String name) {
+        return repository.findByName(name).stream()
+                .map(book -> mapper.map(book, BookDto.class))
+                .collect(Collectors.toList());
     }
 
-    public boolean update(BookDto bookDto, Long id) {
-        boolean updated = repository.existsById(id);
-
-        if (updated) {
-            bookDto.setId(id);
-            repository.save(mapper.map(bookDto, Book.class));
-        }
-        return updated;
+    public List<BookDto> readByAuthor(String name) {
+        return repository.findByAuthor(name).stream()
+                .map(book -> mapper.map(book, BookDto.class))
+                .collect(Collectors.toList());
     }
 
-    public boolean delete(Long id) {
-        boolean deleted = repository.existsById(id);
-
-        if (deleted) {
-            repository.deleteById(id);
-        }
-        return deleted;
+    public List<BookDto> readByAuthorId(Long authorId) {
+        return repository.findByAuthorId(authorId).stream()
+                .map(book -> mapper.map(book, BookDto.class))
+                .collect(Collectors.toList());
     }
 }
