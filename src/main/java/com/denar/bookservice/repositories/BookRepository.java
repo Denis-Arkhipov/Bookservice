@@ -16,7 +16,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     @Query(value = "select * from public.books b " +
             "where b.author_id " +
-            "= (select a.id from public.author a " +
+            "in(select a.id from public.author a " +
             "where a.name like :name)",
             nativeQuery = true)
     List<Book> findByAuthor(@Param("name") String nameAuthor);
@@ -24,4 +24,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Query(value = "select * from books b where b.author_id = :id",
             nativeQuery = true)
     List<Book> findByAuthorId(@Param("id") Long authorId);
+
+
 }
