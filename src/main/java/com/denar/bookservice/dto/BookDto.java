@@ -1,14 +1,15 @@
 package com.denar.bookservice.dto;
 
-import com.denar.bookservice.repositories.entityes.Page;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import javax.persistence.OneToMany;
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDto {
     private Long id;
     private String bookName;
+    private String bookDescription;
     private Long authorId;
 }
