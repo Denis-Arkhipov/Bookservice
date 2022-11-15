@@ -10,6 +10,5 @@ public class ApplicationStarter {
     public static void main(String[] args) {
         log.info("Application start.");
         SpringApplication.run(ApplicationStarter.class, args);
-        log.info("Application finished.");
     }
 }

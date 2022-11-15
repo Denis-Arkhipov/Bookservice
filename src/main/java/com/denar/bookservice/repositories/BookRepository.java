@@ -10,20 +10,20 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
-    @Query(value = "select * from books b where b.name like :name",
+    @Query(value = "SELECT * FROM books b WHERE b.name iLIKE %:name%",
             nativeQuery = true)
-    List<Book> findByName(@Param("name") String nameBook);
+    List<Book> findByName(@Param("name") String bookName);
 
-    @Query(value = "select * from public.books b " +
-            "where b.author_id " +
-            "in(select a.id from public.author a " +
-            "where a.name like :name)",
-            nativeQuery = true)
-    List<Book> findByAuthor(@Param("name") String nameAuthor);
+    @Query(value = "SELECT * FROM public.books b " +
+        "WHERE b.author_id " +
+        "IN(SELECT a.id FROM public.authors a " +
+        "WHERE a.name iLIKE %:name%)",
+        nativeQuery = true)
+    List<Book> findByAuthor(@Param("name") String authorName);
 
-    @Query(value = "select * from books b where b.author_id = :id",
+    @Query(value = "SELECT * FROM books b WHERE b.author_id = :id",
             nativeQuery = true)
-    List<Book> findByAuthorId(@Param("id") Long authorId);
+    List<Book> findByAuthorId(@Param("id") Long id);
 
 
 }

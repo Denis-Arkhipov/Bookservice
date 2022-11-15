@@ -1,5 +1,6 @@
 package com.denar.bookservice.dto;
 
+import com.denar.bookservice.repositories.entityes.Author;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookDto {
-    private Long id;
+    private Long bookId;
     private String bookName;
     private String bookDescription;
-    private Long authorId;
+    private Author author;
 }

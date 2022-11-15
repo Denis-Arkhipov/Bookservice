@@ -1,17 +1,22 @@
 server:
   port: 8080
 
+# Параметры подключения к БД
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bookservice
     username: root
     password: 111
 
+# Параметры логирования
 logging:
   level:
-    org.springframework: ERROR
+    ROOT: INFO
+    org.springframework.web: ERROR
     com.denar.bookservice: DEBUG
   pattern:
-    console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
-    file: "%d %p %c{1.} [%t] %m%n"
-  file: /log/app.log
+    console: "%d{HH:mm:ss.SSS} %-5level - %msg%n"
+    file: "%d{yyy-MM-dd HH:mm:ss.SSS} %-5level %c{1.} %M - %msg%n"
+  file:
+    max-size: 10MB
+    name: logs/app-debug.log
