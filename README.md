@@ -28,6 +28,6 @@ spring:
 /books/{id} - возвращает книгу по id
 /books/name?name=<book name> - возвращает список книг по названию без учета регистра
 /books/authors/{id} - возвращает список книг по id автора
-/books/authors/name?name=<author name> - возвращает список книг по имени автора
+/books/authors/name?name=<author name> - возвращает список книг по имени автора без учета регистра
 ```
 
