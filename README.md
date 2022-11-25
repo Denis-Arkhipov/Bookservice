@@ -23,7 +23,7 @@ spring:
 ```
 
 ## REST Endpoints
-```java
+```spring
 /books - возвращает список всех книг
 /books/{id} - возвращает книгу по id
 /books/name?name=<book name> - возвращает список книг по названию без учета регистра
